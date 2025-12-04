@@ -11,13 +11,25 @@ export default function StockHistory({
   product: Product;
   onClose(): void;
 }) {
-  const [at, setAt] = useState(new Date().toISOString().slice(0, 16));
+  const now = new Date();
+  // Format to YYYY-MM-DDThh:mm for datetime-local input (local timezone)
+  const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 16);
+
+  const [at, setAt] = useState(localDateTime);
   const [result, setResult] = useState<number | null>(null);
 
   async function submit() {
     try {
-      const iso = new Date(at).toISOString();
-      const data = await warehouseApi.getStockAt(product.id, iso);
+      // Parse the local datetime input as local time
+      const localDate = new Date(at);
+      // Convert to UTC ISO string before sending to backend
+      const utcIso = new Date(
+        localDate.getTime() - localDate.getTimezoneOffset() * 60000
+      ).toISOString();
+
+      const data = await warehouseApi.getStockAt(product.id, utcIso);
       setResult(data.quantity);
       toast.success("History loaded");
     } catch {
@@ -34,6 +46,7 @@ export default function StockHistory({
         value={at}
         onChange={(e) => setAt(e.target.value)}
         className="w-full border px-3 py-2 rounded-md"
+        max={new Date().toISOString().slice(0, 16)}
       />
 
       <button

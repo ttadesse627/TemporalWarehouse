@@ -63,7 +63,7 @@ export default function ProductList() {
           placeholder="Search product..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="px-3 py-2 border rounded-md w-64"
+          className="px-3 py-2 border rounded-md w-64 text-amber-50"
         />
 
         <button

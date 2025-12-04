@@ -32,15 +32,16 @@ public class HistoryController(IHistoryService historyService, IProductService p
     }
 
     [HttpGet("stock-at")]
-    public async Task<ActionResult<int>> GetStockAt(Guid productId, [FromQuery] DateTime dateTime)
+    public async Task<ActionResult<int>> GetStockAt(Guid productId, [FromQuery] DateTime at)
     {
         var product = await _productService.GetByIdAsync(productId);
 
+        Console.WriteLine(at);
         if (product == null)
             return NotFound("Product not found.");
 
-        var value = await _historyService.GetStockAtTimeAsync(productId, dateTime);
+        var value = await _historyService.GetStockAtTimeAsync(productId, at);
 
-        return Ok(new { StockAtGivenTime = value });
+        return Ok(new { Quantity = value });
     }
 }

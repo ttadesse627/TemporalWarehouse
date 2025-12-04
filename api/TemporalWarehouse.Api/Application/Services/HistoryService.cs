@@ -15,11 +15,9 @@ public class HistoryService(IStockRepository stockRepository) : IHistoryService
 
     public async Task<int> GetStockAtTimeAsync(Guid productId, DateTime timestamp)
     {
-        var transactions = await _stockRepository.GetBeforeAsync(productId, timestamp);
+        timestamp = DateTime.SpecifyKind(timestamp, DateTimeKind.Local).ToUniversalTime();
+        var transaction = await _stockRepository.GetBeforeAsync(productId, timestamp);
 
-        if (transactions.Count == 0)
-            return 0;
-
-        return transactions.Last().NewTotal;
+        return transaction?.NewTotal ?? 0;
     }
 }

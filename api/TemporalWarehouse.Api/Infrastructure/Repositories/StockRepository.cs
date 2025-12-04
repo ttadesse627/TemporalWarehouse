@@ -23,12 +23,13 @@ public class StockRepository(WarehouseDbContext context) : IStockRepository
             .ToListAsync();
     }
 
-    public Task<List<StockTransaction>> GetBeforeAsync(Guid productId, DateTime dateTime)
+    public async Task<StockTransaction?> GetBeforeAsync(Guid productId, DateTime dateTime)
     {
-        return _context.StockTransactions
-            .Where(s => s.ProductId == productId && s.OccurredAt <= dateTime)
-            .OrderBy(s => s.OccurredAt)
-            .ToListAsync();
+        var utcTime = DateTime.SpecifyKind(dateTime, DateTimeKind.Local).ToUniversalTime();
+        return await _context.StockTransactions
+        .Where(s => s.ProductId == productId && s.OccurredAt <= utcTime)
+        .OrderByDescending(s => s.OccurredAt)
+        .FirstOrDefaultAsync();
     }
 
     public Task SaveChangesAsync()
