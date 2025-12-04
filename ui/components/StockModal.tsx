@@ -13,17 +13,17 @@ export default function StockModal({
   mode: "add" | "remove";
   onClose(): void;
 }) {
-  const [amount, setAmount] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function submit() {
     setLoading(true);
     try {
       if (mode === "add") {
-        await warehouseApi.addStock(product.id, Number(amount));
+        await warehouseApi.addStock(product.id, Number(quantity));
         toast.success("Stock added");
       } else {
-        await warehouseApi.removeStock(product.id, Number(amount));
+        await warehouseApi.removeStock(product.id, Number(quantity));
         toast.success("Stock removed");
       }
       onClose();
@@ -42,8 +42,8 @@ export default function StockModal({
 
       <input
         type="number"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
+        value={quantity}
+        onChange={(e) => setQuantity(e.target.value)}
         className="w-full border px-3 py-2 rounded-md"
         placeholder="Enter quantity"
       />

@@ -7,7 +7,7 @@ using TemporalWarehouse.Api.Contracts.ResponseDtos;
 namespace TemporalWarehouse.Api.Controllers;
 
 [ApiController]
-[Route("api/products/{productId:guid}/[controller]")]
+[Route("api/products/{productId:guid}/history")]
 public class HistoryController(IHistoryService historyService, IProductService productService) : ControllerBase
 {
     private readonly IHistoryService _historyService = historyService;

@@ -17,7 +17,7 @@ public class Product
 
     // Needed for concurrency conflict resolution
     [Timestamp]
-    public byte[] RowVersion { get; set; } = null!;
+    public uint RowVersion { get; set; }
 
     public List<StockTransaction> StockTransactions { get; set; } = new();
 }

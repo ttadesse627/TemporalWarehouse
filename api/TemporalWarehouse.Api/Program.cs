@@ -7,18 +7,18 @@ using TemporalWarehouse.Api.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Dependency Registration
+builder.Services.AddControllers();
 builder.Services.AddDbContext<WarehouseDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+}, ServiceLifetime.Scoped);
 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IStockRepository, StockRepository>();
 
 builder.Services.AddTransient<IProductService, ProductService>();
-builder.Services.AddTransient<IStockService, StockService>();
-builder.Services.AddTransient<IHistoryService, HistoryService>();
+builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<IHistoryService, HistoryService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -30,9 +30,9 @@ builder.Services.AddCors(options =>
     {
         options.AddPolicy("WarehouseCorsPolicy", builder =>
         {
-            builder.WithOrigins("http://localhost:3000", "https://myclientapp.com") // Specify allowed origins
+            builder.WithOrigins("http://localhost:3000") // Specify allowed origins
                    .AllowAnyMethod()
-                   .WithHeaders("Content-Type", "Authorization")
+                   .AllowAnyHeader()
                    .AllowCredentials();
         });
     });
@@ -50,6 +50,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("WarehouseCorsPolicy");
 app.UseHttpsRedirection();
-
+app.MapControllers();
 
 app.Run();

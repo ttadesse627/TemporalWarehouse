@@ -7,7 +7,7 @@ using TemporalWarehouse.Api.Contracts.RequestDtos;
 namespace TemporalWarehouse.Api.Controllers;
 
 [ApiController]
-[Route("api/products/{productId:guid}/[controller]")]
+[Route("api/products/{productId:guid}")]
 public class StockController(IStockService stockService) : ControllerBase
 {
     private readonly IStockService _stockService = stockService;

@@ -14,7 +14,7 @@ public class StockTransactionEntityConfiguration : IEntityTypeConfiguration<Stoc
 
         builder.Property(t => t.Type)
             .IsRequired()
-            .HasConversion<int>(); // enum -> int
+            .HasConversion<int>();
 
         builder.Property(t => t.QuantityChanged)
             .IsRequired();

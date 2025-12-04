@@ -46,18 +46,18 @@ export const warehouseApi = {
     await api.delete(`/products/${id}`);
   },
 
-  async addStock(id: string, amount: number) {
-    const res = await api.post(`/products/${id}/add-stock`, { amount });
+  async addStock(id: string, quantity: number) {
+    const res = await api.post(`/products/${id}/add-stock`, { quantity });
     return res.data;
   },
 
-  async removeStock(id: string, amount: number) {
-    const res = await api.post(`/products/${id}/remove-stock`, { amount });
+  async removeStock(id: string, quantity: number) {
+    const res = await api.post(`/products/${id}/remove-stock`, { quantity });
     return res.data;
   },
 
   async getStockAt(id: string, at: string) {
-    const res = await api.get(`/products/${id}/stock-at?at=${encodeURIComponent(at)}`);
+    const res = await api.get(`/products/${id}/history/stock-at?at=${encodeURIComponent(at)}`);
     return res.data;
   },
 };
