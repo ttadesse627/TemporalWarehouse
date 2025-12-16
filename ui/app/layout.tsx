@@ -26,9 +26,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased no-scrollbar`}
       >
-        <Toaster position="bottom-right" />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            className: 'text-white shadow-lg rounded-lg px-4 py-3',
+            duration: 4000,
+            style: {
+              maxWidth: '380px',
+            },
+            success: {
+              className: 'bg-green-800 h-24',
+            },
+            error: {
+              className: 'bg-red-800',
+            },
+          }}
+        />
         {children}
       </body>
     </html>
