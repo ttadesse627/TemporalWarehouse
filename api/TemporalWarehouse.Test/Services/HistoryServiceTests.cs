@@ -15,7 +15,7 @@ public class HistoryServiceTests
 
         var stockRepository = Helpers.MockFactory.StockRepository();
         stockRepository.Setup(r => r.GetBeforeAsync(productId, It.IsAny<DateTime>()))
-            .ReturnsAsync(new StockTransaction { NewTotal = 5, OccurredAt = DateTime.UtcNow.AddMinutes(-10) });
+            .ReturnsAsync(new StockTransaction { NewTotal = 8, OccurredAt = DateTime.UtcNow.AddMinutes(-10) });
 
         var service = new HistoryService(stockRepository.Object);
 

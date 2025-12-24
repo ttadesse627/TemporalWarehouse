@@ -46,6 +46,6 @@ public class HistoryControllerTests
         var result = await controller.GetStockAt(productId, DateTime.UtcNow);
 
         var ok = Assert.IsType<OkObjectResult>(result.Result);
-        Assert.Equal(12, ok.Value?.GetType().GetProperty("StockAtGivenTime")!.GetValue(ok.Value));
+        Assert.Equal(12, ok.Value!.GetType().GetProperty("Quantity")?.GetValue(ok.Value));
     }
 }
