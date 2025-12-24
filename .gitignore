@@ -4,6 +4,7 @@
 api/TemporalWarehouse.Api/obj/
 api/TemporalWarehouse.Api/bin/
 api/TemporalWarehouse.Api/Migrations/
+api/TemporalWarehouse.Api/appsettings.Development.json
 
 api/TemporalWarehouse.Test/obj/
 api/TemporalWarehouse.Test/bin/

@@ -7,10 +7,16 @@ using TemporalWarehouse.Api.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(8000);
+});
+
 builder.Services.AddControllers();
 builder.Services.AddDbContext<WarehouseDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("NpgsqlConnection"));
+    // options.UseNpgsql(builder.WebHost.Environment("NpgsqlConnection"));
 }, ServiceLifetime.Scoped);
 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
@@ -46,7 +52,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseCors("WarehouseCorsPolicy");
 app.UseHttpsRedirection();
