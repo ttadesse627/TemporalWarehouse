@@ -4,7 +4,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using TemporalWarehouse.Api.Application.Interfaces;
-using TemporalWarehouse.Api.Application.Services;
 using TemporalWarehouse.Api.Contracts.RequestDtos;
 using TemporalWarehouse.Api.Controllers;
 

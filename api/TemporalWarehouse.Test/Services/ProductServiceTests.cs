@@ -16,7 +16,7 @@ public class ProductServiceTests
         var service = new ProductService(productRepository.Object);
 
         // Act
-        var result = await service.CreateAsync("Test Product", "SKU123", 10.5m);
+        var result = await service.CreateAsync("Test Product", "SKU123", 10.5m, 50);
 
         // Assert
         Assert.NotNull(result);
