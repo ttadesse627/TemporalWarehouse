@@ -13,10 +13,11 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 builder.Services.AddControllers();
+
+string? connectionString = builder.Configuration.GetConnectionString("NpgsqlConnectionRemote");
 builder.Services.AddDbContext<WarehouseDbContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("NpgsqlConnection"));
-    // options.UseNpgsql(builder.WebHost.Environment("NpgsqlConnection"));
+    options.UseNpgsql(connectionString);
 }, ServiceLifetime.Scoped);
 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
