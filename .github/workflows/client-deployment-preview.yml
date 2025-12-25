@@ -1,59 +1,63 @@
-# name: Temporal Warehouse Client Deployment Preview Actions
-# env:
-#     VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
-#     VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-# on:
-#     push:
-#         branches:
-#             - main
-#         paths:
-#           - 'ui/**'
-# jobs:
-#   Deploy-Preview:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v2
-
-#       - name: Install Vercel CLI
-#         run: npm install --global vercel@latest
-#         working-directory: ./ui
-
-#       - name: Pull Vercel Environment Information
-#         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-
-#       - name: Build Project Artifacts
-#         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-#         working-directory: ./ui
-
-#       - name: Deploy Project Artifacts to Vercel
-#         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
-#         working-directory: ./ui
-
-
-name: Deploy UI to Vercel
+name: Client Deployment Actions
+env:
+    VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+    VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'ui/**'
-
+    push:
+        branches:
+            - main
+        paths:
+          - 'ui/**'
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
+      - run: npm install
+        working-directory: ./ui
 
-      - name: Deploy to Vercel
-        uses: BetaHuhn/deploy-to-vercel-action@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          # optional
-          PRODUCTION: true
-        # working-directory: ./ui
+      - name: Build Client Application
+        run: npm run build
+        working-directory: ./ui
+
+  deploy-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+        working-directory: ./ui
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ui
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ui
+  
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: ["build"]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+        working-directory: ./ui
+
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ui
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        working-directory: ./ui
