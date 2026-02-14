@@ -1,9 +1,23 @@
+using System.Net;
 using Microsoft.OpenApi.Models;
 using TemporalWarehouse.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddHsts(options =>
+{
+    options.Preload = true;
+    options.IncludeSubDomains = true;
+    options.MaxAge = TimeSpan.FromDays(60);
+});
+
+builder.Services.AddHttpsRedirection( options =>
+{
+    options.RedirectStatusCode = (int)HttpStatusCode.PermanentRedirect;
+    options.HttpsPort = 443;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
@@ -34,6 +48,7 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
 builder.Services.AddCors(options =>
     {
         options.AddPolicy("WarehouseCorsPolicy", builder =>
@@ -55,6 +70,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors("WarehouseCorsPolicy");
+app.UseHsts();
 app.UseHttpsRedirection();
 app.MapControllers();
 
