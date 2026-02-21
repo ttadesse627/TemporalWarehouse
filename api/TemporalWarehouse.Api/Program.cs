@@ -70,8 +70,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors("WarehouseCorsPolicy");
-app.UseHsts();
-app.UseHttpsRedirection();
+// app.UseHsts();
+// app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
